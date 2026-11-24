@@ -3,7 +3,7 @@
 机の上の Android 端末を、Windows PC の「手元パネル」にするソフトです。[English](README.en.md)
 
 > **開発中です。まだ使える物はありません。**
-> いまリポジトリにあるのは、設計を決めるための測定用ツール(Probe)だけです。アプリ本体と Android 側のアプリは、これから作ります。
+> いまリポジトリにあるのは、設計を決めるための測定用ツール(Probe。PC 側と Android 側)だけです。アプリ本体は、PC 側も Android 側もこれから作ります。
 
 ## 作ろうとしている物
 
@@ -27,9 +27,21 @@
 
 | 段階 | 中身 | 状態 |
 |---|---|---|
-| Phase 0 | 測定用ツール(Probe) | PC 側はビルドできる。Android 側は未作成。実測はこれから |
+| Phase 0 | 測定用ツール(Probe) | PC 側はビルドできる。Android 側は作った。dtab で一覧・振動・カメラまで確認、バーコードの実読はこれから。PC 側の実測もこれから |
 | Phase 1 | 土台 | `DeskSlate.Core` の一部だけ先に作った(操作の門番、設定の読み書き、メッセージの型)。接続と画面は未着手 |
 | Phase 2〜8 | 5 つの機能と仕上げ | 未着手 |
+
+## ダウンロード
+
+[Releases](https://github.com/takosasi-dev/desk-slate/releases) の v0.0.1(プレリリース)に、次の 2 つを置いています。
+
+| ファイル | 中身 |
+|---|---|
+| `DeskSlate-Probe-v0.0.1-win-x64.zip` | PC 側の Probe と SensorHost。.NET 10 のランタイムごと入っているので、.NET を入れなくても動きます。展開して PowerShell から動かします |
+| `DeskSlate-Probe-v0.0.1-android.apk` | Android 側の probe(Android 7.0 以降) |
+
+- APK は**デバッグ用の鍵で署名した仮の物**です。正式な鍵に変えた後の版は上書きで入らないので、この版を消してから入れ直してください。
+- `DeskSlate.SensorHost.exe` は管理者で動きます(起動すると UAC の確認が出ます)。
 
 ## いまある物: PC 側の Probe
 
@@ -55,6 +67,37 @@ dotnet test pc\DeskSlate.sln -c Release
 - `keys` は、前面のウィンドウに実際にキーを打ち込みます。メモ帳を前面にしてから使ってください。
 - `SensorHost` は管理者の PowerShell から動かしてください。読むだけで、ハードウェアの設定は変えません。ドライバ(PawnIO)は同梱も導入もしません。
 - Probe の出力には、PC で動いているアプリの名前などが入ります。そのまま公開の場所に貼らないでください。
+
+## いまある物: Android 側の probe
+
+端末の実物を調べて、画面とログに出すだけのアプリです。
+
+| ボタン(adb の `action`) | やること |
+|---|---|
+| 情報(`info`) | 端末の情報とカメラの一覧を出す。起動したときにも出す |
+| 振動(`vibrate`) | 振動を 1 回鳴らす |
+| EAN-13 を 10 回(`ean`) | カメラで EAN-13 を 10 回読み、1 回ごとの時間と中央値、R-3 の基準(3 秒以内に 8 回以上)を満たすかを出す |
+| QR を 3 回(`qr`) | カメラで QR を 3 回読み、同じように出す |
+
+ビルド(JDK 17 と Android SDK が要ります。`android\local.properties` に `sdk.dir=<SDK の場所>` を書いておきます):
+
+```powershell
+cd android
+.\gradlew.bat assembleDebug
+```
+
+入れ方と使い方:
+
+- APK を端末に入れて「DeskSlate Probe」を開き、ボタンを押します。読み取りは「読む」を押すたびに 1 回です。
+- adb からも動かせます。出した行は logcat のタグ `DeskSlateProbe` にも出ます。
+
+```powershell
+adb install -r DeskSlate-Probe-v0.0.1-android.apk
+adb shell am start -n io.github.takosasidev.deskslate.probe/.MainActivity --es action info
+adb logcat -s DeskSlateProbe
+```
+
+- 権限はカメラ(`CAMERA`)と振動(`VIBRATE`)だけです。インターネットの権限は持たず、何も保存も送信もしません。
 
 ## ライセンス
 
