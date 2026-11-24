@@ -18,13 +18,17 @@ internal static class PipeProbe
             var security = new PipeSecurity();
             security.AddAccessRule(new PipeAccessRule(sid, PipeAccessRights.Read | PipeAccessRights.Synchronize, AccessControlType.Allow));
 
-            using var server = NamedPipeServerStreamAcl.Create(name, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 0, 0, security);
+            using var server = NamedPipeServerStreamAcl.Create(name, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 0, 4096, security); // 出力バッファが 0 だと、相手が読むまで書き込みが返らない
             Console.WriteLine("作成: OK (名前 TabDeck.Probe.<SID>、許可は自分の SID の Read だけ)");
 
             var waiting = server.WaitForConnectionAsync();
             using var client = new NamedPipeClientStream(".", name, PipeDirection.In);
             client.Connect(2000);
-            waiting.Wait(2000);
+            if (!waiting.Wait(2000))
+            {
+                return "失敗: サーバー側が 2 秒待っても接続を受け取れませんでした";
+            }
+
             Console.WriteLine("接続: OK");
 
             using var writer = new StreamWriter(server) { AutoFlush = true };
