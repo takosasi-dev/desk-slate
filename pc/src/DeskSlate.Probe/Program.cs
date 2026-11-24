@@ -1,6 +1,6 @@
-// TabDeck.Probe の入口。Phase 0 の実測用で、引数で 5 つの確認(audio / metrics / foreground / keys / pipe)を選ぶ。
-// 出力は仕様書 §8.1 に貼る。製品の本体(TabDeck.App)からは参照しない。
-using TabDeck.Probe;
+// DeskSlate.Probe の入口。Phase 0 の実測用で、引数で 5 つの確認(audio / metrics / foreground / keys / pipe)を選ぶ。
+// 出力は仕様書 §8.1 に貼る。製品の本体(DeskSlate.App)からは参照しない。
+using DeskSlate.Probe;
 
 return args.FirstOrDefault() switch
 {
@@ -15,7 +15,7 @@ return args.FirstOrDefault() switch
 static int Usage()
 {
     Console.WriteLine("""
-        TabDeck.Probe  (管理者でない PowerShell から動かす)
+        DeskSlate.Probe  (管理者でない PowerShell から動かす)
           audio                       既定の再生デバイスと、音のセッションの一覧を出す
           audio --set <exe名> <0-100> その exe の音量を 2 秒だけ変えて戻す(確認あり)
           metrics                     CPU・メモリ・ディスク・ネットワーク・バッテリー・GPU を 5 秒分出す

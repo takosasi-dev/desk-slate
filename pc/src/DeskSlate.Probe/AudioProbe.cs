@@ -2,7 +2,7 @@
 // API の名前は NAudio.Wasapi 3.3.0 の実物(NAudio.CoreAudioApi)から引いた。
 using NAudio.CoreAudioApi;
 
-namespace TabDeck.Probe;
+namespace DeskSlate.Probe;
 
 internal static class AudioProbe
 {

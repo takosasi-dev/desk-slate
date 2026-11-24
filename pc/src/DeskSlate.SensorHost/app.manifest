@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- SensorHost だけが管理者で動く(仕様書 INV-1・INV-2、AC-40)。本体(TabDeck.App)は asInvoker のままにする。 -->
+<!-- SensorHost だけが管理者で動く(仕様書 INV-1・INV-2、AC-40)。本体(DeskSlate.App)は asInvoker のままにする。 -->
 <assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
-  <assemblyIdentity version="1.0.0.0" name="TabDeck.SensorHost" />
+  <assemblyIdentity version="1.0.0.0" name="DeskSlate.SensorHost" />
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
     <security>
       <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 
-namespace TabDeck.Probe;
+namespace DeskSlate.Probe;
 
 internal static class MetricsProbe
 {

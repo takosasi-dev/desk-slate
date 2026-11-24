@@ -1,4 +1,4 @@
-# TabDeck
+# DeskSlate
 
 Turns an Android tablet on your desk into a side panel for a Windows PC. [日本語](README.md)
 
@@ -35,18 +35,18 @@ Design rules:
 Requirements: Windows 11 (x64), .NET 10 SDK.
 
 ```powershell
-dotnet build pc\TabDeck.sln -c Release
+dotnet build pc\DeskSlate.sln -c Release
 ```
 
 | Executable | What it does | Privilege |
 |---|---|---|
-| `TabDeck.Probe.exe audio` | Lists the default playback device and per-app volumes | Normal |
-| `TabDeck.Probe.exe audio --set <exe> <0-100>` | Changes that app's volume for 2 seconds, then restores it (asks first) | Normal |
-| `TabDeck.Probe.exe metrics` | Prints CPU, memory, disk, network, battery and GPU values for 5 seconds | Normal |
-| `TabDeck.Probe.exe foreground` | Prints foreground window changes for 30 seconds | Normal |
-| `TabDeck.Probe.exe keys` | After 5 seconds, types `0123456789ABC-123` into the foreground window (asks first) | Normal |
-| `TabDeck.Probe.exe pipe` | Checks that a named pipe readable only by you can be created | Normal |
-| `TabDeck.SensorHost.exe --probe` | Lists the hardware and sensors LibreHardwareMonitorLib reports | Administrator |
+| `DeskSlate.Probe.exe audio` | Lists the default playback device and per-app volumes | Normal |
+| `DeskSlate.Probe.exe audio --set <exe> <0-100>` | Changes that app's volume for 2 seconds, then restores it (asks first) | Normal |
+| `DeskSlate.Probe.exe metrics` | Prints CPU, memory, disk, network, battery and GPU values for 5 seconds | Normal |
+| `DeskSlate.Probe.exe foreground` | Prints foreground window changes for 30 seconds | Normal |
+| `DeskSlate.Probe.exe keys` | After 5 seconds, types `0123456789ABC-123` into the foreground window (asks first) | Normal |
+| `DeskSlate.Probe.exe pipe` | Checks that a named pipe readable only by you can be created | Normal |
+| `DeskSlate.SensorHost.exe --probe` | Lists the hardware and sensors LibreHardwareMonitorLib reports | Administrator |
 
 Notes:
 

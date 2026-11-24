@@ -2,7 +2,7 @@
 // 構造体の並びは Microsoft Learn の各 API のページのとおり(SendInput / INPUT / KEYBDINPUT / GetSystemTimes ほか)。
 using System.Runtime.InteropServices;
 
-namespace TabDeck.Probe;
+namespace DeskSlate.Probe;
 
 internal static class Native
 {

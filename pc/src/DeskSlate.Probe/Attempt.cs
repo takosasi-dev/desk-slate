@@ -1,6 +1,6 @@
 // 1 つの API を試して、値か、失敗の中身(例外の型と文)を文字で返す。
 // Probe は「どの API が取れて、どれが取れないか」を出すのが仕事なので、ここだけは例外を広く受けて表示に変える。
-namespace TabDeck.Probe;
+namespace DeskSlate.Probe;
 
 internal static class Attempt
 {

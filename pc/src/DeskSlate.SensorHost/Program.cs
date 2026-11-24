@@ -1,4 +1,4 @@
-// TabDeck.SensorHost の入口。管理者で動き、センサーの値を読むだけのプロセス(仕様書 INV-1・INV-2)。
+// DeskSlate.SensorHost の入口。管理者で動き、センサーの値を読むだけのプロセス(仕様書 INV-1・INV-2)。
 // Phase 0 の版は --probe(ハードウェアとセンサーの一覧を標準出力に出して終了)だけを持つ。
 // パイプへの書き出しとタスクの登録は、§8.3 が埋まった後の Phase 7 で足す。
 using LibreHardwareMonitor.Hardware;

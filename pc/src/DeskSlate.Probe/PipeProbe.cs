@@ -4,7 +4,7 @@ using System.IO.Pipes;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
-namespace TabDeck.Probe;
+namespace DeskSlate.Probe;
 
 internal static class PipeProbe
 {
@@ -14,12 +14,12 @@ internal static class PipeProbe
         Console.WriteLine(Attempt.Read(() =>
         {
             var sid = WindowsIdentity.GetCurrent().User ?? throw new InvalidOperationException("利用者の SID を取れません");
-            var name = $"TabDeck.Probe.{sid.Value}";
+            var name = $"DeskSlate.Probe.{sid.Value}";
             var security = new PipeSecurity();
             security.AddAccessRule(new PipeAccessRule(sid, PipeAccessRights.Read | PipeAccessRights.Synchronize, AccessControlType.Allow));
 
             using var server = NamedPipeServerStreamAcl.Create(name, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 0, 4096, security); // 出力バッファが 0 だと、相手が読むまで書き込みが返らない
-            Console.WriteLine("作成: OK (名前 TabDeck.Probe.<SID>、許可は自分の SID の Read だけ)");
+            Console.WriteLine("作成: OK (名前 DeskSlate.Probe.<SID>、許可は自分の SID の Read だけ)");
 
             var waiting = server.WaitForConnectionAsync();
             using var client = new NamedPipeClientStream(".", name, PipeDirection.In);

@@ -1,4 +1,4 @@
-# TabDeck
+# DeskSlate
 
 机の上の Android 端末を、Windows PC の「手元パネル」にするソフトです。[English](README.en.md)
 
@@ -35,18 +35,18 @@
 動作環境: Windows 11(x64)、.NET 10 SDK。
 
 ```powershell
-dotnet build pc\TabDeck.sln -c Release
+dotnet build pc\DeskSlate.sln -c Release
 ```
 
 | 実行ファイル | やること | 権限 |
 |---|---|---|
-| `TabDeck.Probe.exe audio` | 既定の再生デバイスと、アプリごとの音量の一覧を出す | 通常 |
-| `TabDeck.Probe.exe audio --set <exe名> <0-100>` | その exe の音量を 2 秒だけ変えて戻す(確認あり) | 通常 |
-| `TabDeck.Probe.exe metrics` | CPU・メモリ・ディスク・ネットワーク・バッテリー・GPU を 5 秒分出す | 通常 |
-| `TabDeck.Probe.exe foreground` | 30 秒の間、前面のウィンドウの切り替わりを出す | 通常 |
-| `TabDeck.Probe.exe keys` | 5 秒後に、前面のウィンドウへ `0123456789ABC-123` を打つ(確認あり) | 通常 |
-| `TabDeck.Probe.exe pipe` | 自分だけが読める名前付きパイプを作れるかを試す | 通常 |
-| `TabDeck.SensorHost.exe --probe` | LibreHardwareMonitorLib が返すハードウェアとセンサーの一覧を出す | 管理者 |
+| `DeskSlate.Probe.exe audio` | 既定の再生デバイスと、アプリごとの音量の一覧を出す | 通常 |
+| `DeskSlate.Probe.exe audio --set <exe名> <0-100>` | その exe の音量を 2 秒だけ変えて戻す(確認あり) | 通常 |
+| `DeskSlate.Probe.exe metrics` | CPU・メモリ・ディスク・ネットワーク・バッテリー・GPU を 5 秒分出す | 通常 |
+| `DeskSlate.Probe.exe foreground` | 30 秒の間、前面のウィンドウの切り替わりを出す | 通常 |
+| `DeskSlate.Probe.exe keys` | 5 秒後に、前面のウィンドウへ `0123456789ABC-123` を打つ(確認あり) | 通常 |
+| `DeskSlate.Probe.exe pipe` | 自分だけが読める名前付きパイプを作れるかを試す | 通常 |
+| `DeskSlate.SensorHost.exe --probe` | LibreHardwareMonitorLib が返すハードウェアとセンサーの一覧を出す | 管理者 |
 
 注意:
 

@@ -2,7 +2,7 @@
 // キーを注入するので、自動では動かさず、人が手で実行する。打つ前に確認を求める。
 using System.Runtime.InteropServices;
 
-namespace TabDeck.Probe;
+namespace DeskSlate.Probe;
 
 internal static class KeysProbe
 {

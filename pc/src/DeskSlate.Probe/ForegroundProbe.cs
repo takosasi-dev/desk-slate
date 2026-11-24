@@ -2,7 +2,7 @@
 // 管理者で動くアプリや保護されたプロセスが前面に来たときに「不明」になるかを、動かした人が見る。
 using System.Diagnostics;
 
-namespace TabDeck.Probe;
+namespace DeskSlate.Probe;
 
 internal static class ForegroundProbe
 {
