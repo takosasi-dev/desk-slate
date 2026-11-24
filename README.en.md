@@ -28,7 +28,8 @@ Design rules:
 | Phase | Content | State |
 |---|---|---|
 | Phase 0 | Probes | PC side builds. Android side not written. No measurements yet |
-| Phase 1–8 | The app | Not started |
+| Phase 1 | Foundation | Part of `DeskSlate.Core` only (input gate, settings load/save, message types). Connection and UI not started |
+| Phase 2–8 | The five features and release work | Not started |
 
 ## What is here now: PC-side probes
 
@@ -36,6 +37,7 @@ Requirements: Windows 11 (x64), .NET 10 SDK.
 
 ```powershell
 dotnet build pc\DeskSlate.sln -c Release
+dotnet test pc\DeskSlate.sln -c Release
 ```
 
 | Executable | What it does | Privilege |

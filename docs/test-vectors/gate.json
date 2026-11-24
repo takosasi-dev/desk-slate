@@ -1,0 +1,50 @@
+{
+  "note": "InputGate の判定の表(仕様書 FR-3・FR-4、AC-4)。操作の種類 9 × 状態 4 の全部。どの状態も、認証済み・全機能オン・キーとスクリプトの動作オン・blockedApps は [game.exe]。",
+  "states": {
+    "normal": { "panic": false, "foregroundExe": "notepad.exe" },
+    "panic": { "panic": true, "foregroundExe": "notepad.exe" },
+    "blockedApp": { "panic": false, "foregroundExe": "game.exe" },
+    "unknownForeground": { "panic": false, "foregroundExe": null }
+  },
+  "cases": [
+    { "op": "buttonOpen", "state": "normal", "expect": "ok" },
+    { "op": "buttonKeys", "state": "normal", "expect": "ok" },
+    { "op": "buttonMedia", "state": "normal", "expect": "ok" },
+    { "op": "buttonScript", "state": "normal", "expect": "ok" },
+    { "op": "mixerSet", "state": "normal", "expect": "ok" },
+    { "op": "scanType", "state": "normal", "expect": "ok" },
+    { "op": "scanClipboard", "state": "normal", "expect": "ok" },
+    { "op": "photo", "state": "normal", "expect": "ok" },
+    { "op": "pad", "state": "normal", "expect": "ok" },
+
+    { "op": "buttonOpen", "state": "panic", "expect": "panic" },
+    { "op": "buttonKeys", "state": "panic", "expect": "panic" },
+    { "op": "buttonMedia", "state": "panic", "expect": "panic" },
+    { "op": "buttonScript", "state": "panic", "expect": "panic" },
+    { "op": "mixerSet", "state": "panic", "expect": "panic" },
+    { "op": "scanType", "state": "panic", "expect": "panic" },
+    { "op": "scanClipboard", "state": "panic", "expect": "panic" },
+    { "op": "photo", "state": "panic", "expect": "panic" },
+    { "op": "pad", "state": "panic", "expect": "panic" },
+
+    { "op": "buttonOpen", "state": "blockedApp", "expect": "ok" },
+    { "op": "buttonKeys", "state": "blockedApp", "expect": "blocked_app" },
+    { "op": "buttonMedia", "state": "blockedApp", "expect": "blocked_app" },
+    { "op": "buttonScript", "state": "blockedApp", "expect": "ok" },
+    { "op": "mixerSet", "state": "blockedApp", "expect": "ok" },
+    { "op": "scanType", "state": "blockedApp", "expect": "blocked_app" },
+    { "op": "scanClipboard", "state": "blockedApp", "expect": "ok" },
+    { "op": "photo", "state": "blockedApp", "expect": "ok" },
+    { "op": "pad", "state": "blockedApp", "expect": "blocked_app" },
+
+    { "op": "buttonOpen", "state": "unknownForeground", "expect": "ok" },
+    { "op": "buttonKeys", "state": "unknownForeground", "expect": "blocked_app" },
+    { "op": "buttonMedia", "state": "unknownForeground", "expect": "blocked_app" },
+    { "op": "buttonScript", "state": "unknownForeground", "expect": "ok" },
+    { "op": "mixerSet", "state": "unknownForeground", "expect": "ok" },
+    { "op": "scanType", "state": "unknownForeground", "expect": "blocked_app" },
+    { "op": "scanClipboard", "state": "unknownForeground", "expect": "ok" },
+    { "op": "photo", "state": "unknownForeground", "expect": "ok" },
+    { "op": "pad", "state": "unknownForeground", "expect": "blocked_app" }
+  ]
+}

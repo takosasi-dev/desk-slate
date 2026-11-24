@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- OS に依存しない層。Windows 専用の API を書けないように、-windows を付けない -->
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>DeskSlate.Core</RootNamespace>
+  </PropertyGroup>
+</Project>

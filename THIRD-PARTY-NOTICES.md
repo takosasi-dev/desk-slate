@@ -31,6 +31,16 @@ MPL-2.0 のライブラリは、改変せずにそのまま参照しています
 - DiskInfoToolkit: https://github.com/Blacktempel/DiskInfoToolkit
 - RAMSPDToolkit: https://github.com/Blacktempel/RAMSPDToolkit
 
+## PC 側(テストのときだけ使う物)
+
+| パッケージ | 版 | ライセンス |
+|---|---|---|
+| xunit(xunit.core / xunit.assert / xunit.analyzers / xunit.extensibility.* を含む) | 2.9.3(analyzers は 1.18.0) | Apache-2.0 |
+| xunit.abstractions | 2.0.3 | Apache-2.0 |
+| xunit.runner.visualstudio | 3.1.4 | Apache-2.0 |
+| Microsoft.NET.Test.Sdk(Microsoft.CodeCoverage / Microsoft.TestPlatform.* を含む) | 17.14.1 | MIT |
+| Newtonsoft.Json | 13.0.3 | MIT |
+
 ## Android 側
 
 まだありません。

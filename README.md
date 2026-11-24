@@ -28,7 +28,8 @@
 | 段階 | 中身 | 状態 |
 |---|---|---|
 | Phase 0 | 測定用ツール(Probe) | PC 側はビルドできる。Android 側は未作成。実測はこれから |
-| Phase 1〜8 | 本体 | 未着手 |
+| Phase 1 | 土台 | `DeskSlate.Core` の一部だけ先に作った(操作の門番、設定の読み書き、メッセージの型)。接続と画面は未着手 |
+| Phase 2〜8 | 5 つの機能と仕上げ | 未着手 |
 
 ## いまある物: PC 側の Probe
 
@@ -36,6 +37,7 @@
 
 ```powershell
 dotnet build pc\DeskSlate.sln -c Release
+dotnet test pc\DeskSlate.sln -c Release
 ```
 
 | 実行ファイル | やること | 権限 |
