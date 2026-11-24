@@ -37,6 +37,24 @@ public class MessagesTests
         Assert.Throws<JsonException>(() => MessageJson.Deserialize<ButtonPressMsg>("not json"u8));
     }
 
+    [Theory]
+    [InlineData("{}")]                                  // 必須の項目が無い
+    [InlineData("""{"pressId":1}""")]
+    [InlineData("""{"buttonId":null,"pressId":1}""")] // null を入れてきた
+    [InlineData("""{"buttonId":"b-1","pressId":"x"}""")]
+    [InlineData("null")]
+    public void 項目の欠けた_JSON_は読まずに断る(string json)
+    {
+        Assert.Throws<JsonException>(() => MessageJson.Deserialize<ButtonPressMsg>(Encoding.UTF8.GetBytes(json)));
+    }
+
+    [Fact]
+    public void 省いてよい項目は無くても読める()
+    {
+        var result = MessageJson.Deserialize<ScanResultMsg>("""{"scanId":3,"ok":true}"""u8);
+        Assert.Equal((3L, true, null), (result.ScanId, result.Ok, result.Reason));
+    }
+
     [Fact]
     public void パネルの並びに動作の中身が出ない()
     {

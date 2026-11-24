@@ -105,6 +105,9 @@ public static class MessageJson
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        // 端末からの入口なので、必須の項目が無い JSON と、null を入れてきた JSON を読まずに断る
+        RespectRequiredConstructorParameters = true,
+        RespectNullableAnnotations = true,
     };
 
     public static byte[] Serialize<T>(T message) => JsonSerializer.SerializeToUtf8Bytes(message, Options);
