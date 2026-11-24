@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<!-- 取扱説明書の雛形(DeskSlate・TabSpan・CamPane で共有)。見た目(CSS)と章立てはこのまま使い、中身だけ書く。 -->
+<!-- 値の穴は ManualForge の記法: {{ app.name }} など。data.json の app に name・version・date・repo を置く。 -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>{{ app.name }} 測定用ツール 取扱説明書</title>
+<style>
+  @page { size: A4; }
+  :root {
+    --ink: #1f2328; --sub: #57606a; --line: #d0d7de; --soft: #f6f8fa;
+    --accent: #0b5cad; --accent-soft: #e8f1fb; --warn: #9a3412; --warn-soft: #fff4e5;
+  }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: "BIZ UDPGothic", "Yu Gothic", sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.75; }
+  h1, h2, h3 { line-height: 1.35; }
+  h2 { font-size: 15pt; margin: 0 0 10px; padding: 0 0 6px; border-bottom: 2px solid var(--accent); color: var(--accent); }
+  h3 { font-size: 11.5pt; margin: 18px 0 6px; padding-left: 8px; border-left: 4px solid var(--accent); }
+  p { margin: 6px 0; }
+  ul, ol { margin: 6px 0; padding-left: 1.4em; }
+  li { margin: 2px 0; }
+  code, .mono { font-family: "BIZ UDGothic", "Consolas", monospace; font-size: 9.5pt; background: var(--soft); padding: 0 3px; border-radius: 3px; }
+  pre { font-family: "BIZ UDGothic", "Consolas", monospace; font-size: 8.8pt; line-height: 1.5; background: var(--soft); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; white-space: pre-wrap; word-break: break-all; margin: 6px 0; }
+  table { border-collapse: collapse; width: calc(100% - 1px); margin: 8px 0; font-size: 9.8pt; }
+  th, td { border: 1px solid var(--line); padding: 5px 8px; vertical-align: top; text-align: left; }
+  th { background: var(--soft); white-space: nowrap; }
+  .page { break-after: page; }
+  .mf-page-break { break-after: page; }
+  .note { background: var(--accent-soft); border-left: 4px solid var(--accent); padding: 8px 12px; margin: 10px 0; border-radius: 0 6px 6px 0; }
+  .warn { background: var(--warn-soft); border-left: 4px solid var(--warn); padding: 8px 12px; margin: 10px 0; border-radius: 0 6px 6px 0; }
+  .warn strong { color: var(--warn); }
+  .steps { counter-reset: step; list-style: none; padding-left: 0; }
+  .steps > li { counter-increment: step; position: relative; padding-left: 2.2em; margin: 6px 0; }
+  .steps > li::before { content: counter(step); position: absolute; left: 0; top: 0.1em; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--accent); color: #fff; font-size: 9pt; text-align: center; line-height: 1.6em; }
+  figure.mf-figure { margin: 10px 0; text-align: center; break-inside: avoid; }
+  figure.mf-figure img { max-width: 100%; border: 1px solid var(--line); border-radius: 6px; }
+  figure.mf-figure.phone img { max-height: 150mm; }
+  figcaption { font-size: 9pt; color: var(--sub); margin-top: 4px; }
+  /* 表紙 */
+  .cover { height: 250mm; display: flex; flex-direction: column; justify-content: center; }
+  .cover .kind { color: var(--accent); font-size: 12pt; letter-spacing: 0.1em; }
+  .cover h1 { font-size: 30pt; margin: 6px 0 4px; }
+  .cover .sub { font-size: 14pt; color: var(--sub); margin-bottom: 28px; }
+  .cover .meta { border-top: 1px solid var(--line); padding-top: 10px; color: var(--sub); font-size: 10pt; }
+  /* 目次 */
+  .toc ol { padding-left: 1.2em; }
+  .toc li { margin: 4px 0; }
+  .muted { color: var(--sub); }
+</style>
+</head>
+<body>
+
+<!-- 1. 表紙(このまま。subtitle だけ data.json で) -->
+<section class="page cover">
+  <div class="kind">取扱説明書</div>
+  <h1>{{ app.name }}</h1>
+  <div class="sub">{{ app.subtitle }}</div>
+  <div class="meta">
+    版 {{ app.version }}(プレリリース) / {{ app.date }}<br>
+    {{ app.repo }}
+  </div>
+</section>
+
+<!-- 2. 目次と、この説明書の前提 -->
+<section class="page toc">
+  <h2>目次</h2>
+  <ol>
+    <li>はじめに(このツールでできること・できないこと)</li>
+    <li>用意する物</li>
+    <li>入れ方</li>
+    <li>使い方</li>
+    <li>結果の読み方</li>
+    <li>困ったとき</li>
+    <li>安全とプライバシー</li>
+    <li>片付け</li>
+    <li>ライセンスと連絡先</li>
+  </ol>
+  <div class="warn">
+    <strong>この説明書は、測定用ツール(Phase 0)の物です。</strong><br>
+    {{ app.name }} は、机の上の Android 端末を Windows PC の「手元パネル」にするソフトとして開発中です。この説明書で扱うのは、その設計を決めるために PC と端末の実物を調べる測定用ツール(Probe)だけです。手元パネルのアプリ本体はまだありません。
+  </div>
+  <p class="muted">この説明書のツールは、PC 側が {{ files.zip }}、Android 側が {{ files.apk }} です。どちらも {{ app.repo }} の Releases から手に入ります。</p>
+</section>
+
+<!-- 3〜11. 各章は <section> と <h2> で。章の間は必要に応じて <div class="mf-page-break"></div> -->
+<!-- 手順は <ol class="steps">、注意は <div class="note"> / <div class="warn">、出力の例は <pre>、画面は <figure class="mf-figure phone"> -->
+
+<section>
+  <h2>1. はじめに(このツールでできること・できないこと)</h2>
+  <p>測定用ツールは、PC と Android 端末で「どの値が取れるか」「どの操作が通るか」を調べて、結果を画面に出すだけの道具です。PC 側と Android 側の 2 つがあり、別々に動きます(PC と端末をつなぐ必要はありません)。</p>
+
+  <h3>PC 側で分かること</h3>
+  <table>
+    <tr><th>ツール</th><th>分かること</th></tr>
+    <tr><td><code>audio</code></td><td>既定の再生デバイスと、アプリごとの音量・ミュートを読めるか</td></tr>
+    <tr><td><code>audio --set</code></td><td>指定したアプリの音量を変えて、元に戻せるか</td></tr>
+    <tr><td><code>metrics</code></td><td>CPU・メモリ・ディスク・ネットワーク・バッテリー・GPU の値を、管理者なしで取れるか。どの取り方がタスク マネージャーに近いか</td></tr>
+    <tr><td><code>foreground</code></td><td>いま前面にあるアプリの名前を取れるか。取れないアプリはどれか</td></tr>
+    <tr><td><code>keys</code></td><td>前面のウィンドウに数字と英字を打ち込めるか</td></tr>
+    <tr><td><code>pipe</code></td><td>自分だけが読める通り道(名前付きパイプ)を作れるか</td></tr>
+    <tr><td><code>SensorHost --probe</code></td><td>温度・ファンなどのセンサーを、どの名前で読めるか(管理者で動かす)</td></tr>
+  </table>
+
+  <h3>Android 側で分かること</h3>
+  <table>
+    <tr><th>ボタン</th><th>分かること</th></tr>
+    <tr><td>情報</td><td>Android の版、機種、カメラの数と向き、カメラが出せる画像の大きさ、振動できるか</td></tr>
+    <tr><td>振動</td><td>振動を鳴らせるか</td></tr>
+    <tr><td>EAN-13 を 10 回</td><td>商品の箱のバーコード(EAN-13)を、カメラで何秒で読めるか</td></tr>
+    <tr><td>QR を 3 回</td><td>QR コードを、カメラで何秒で読めるか</td></tr>
+  </table>
+
+  <h3>できないこと</h3>
+  <ul>
+    <li>手元パネルの機能(ボタンでアプリを開く、音量ミキサー、ダッシュボードなど)はありません。</li>
+    <li>PC と端末をつなぐ機能はありません。</li>
+    <li>結果をファイルに保存したり、どこかへ送ったりしません。結果は画面に出るだけです。</li>
+    <li>PC や端末の設定は変えません。ただし <code>keys</code> は実際にキーを打ち、<code>audio --set</code> は音量を 2 秒だけ変えて元に戻します。どちらも動かす前に確認があります。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>2. 用意する物</h2>
+  <table>
+    <tr><th>物</th><th>中身</th></tr>
+    <tr><td>PC</td><td>Windows 11(x64)。.NET を入れる必要はありません(ツールに同梱しています)</td></tr>
+    <tr><td>PC 側のツール</td><td><code>{{ files.zip }}</code></td></tr>
+    <tr><td>Android 端末</td><td>Android 7.0 以降で、背面カメラがある物</td></tr>
+    <tr><td>Android 側のツール</td><td><code>{{ files.apk }}</code></td></tr>
+    <tr><td>バーコード</td><td>EAN-13 のバーコードが付いた商品の箱など(数字が 13 けたのバーコード。日本の商品の JAN コードは EAN-13 です)</td></tr>
+    <tr><td>QR コード</td><td>紙に印刷した物か、別の画面に出した物</td></tr>
+    <tr><td>場所</td><td>読み取りは明るい部屋で</td></tr>
+    <tr><td>メモ帳</td><td><code>keys</code> で文字を打ち込む先(Windows に入っている物)</td></tr>
+    <tr><td>(あれば)adb</td><td>PC から端末に入れる・動かす場合だけ。無くても使えます</td></tr>
+  </table>
+</section>
+
+<div class="mf-page-break"></div>
+
+<section>
+  <h2>3. 入れ方</h2>
+  <h3>PC 側</h3>
+  <ol class="steps">
+    <li><a href="{{ app.repo }}/releases">{{ app.repo }}/releases</a> から <code>{{ files.zip }}</code> をダウンロードします。</li>
+    <li>ダウンロードした zip を右クリックし、「すべて展開」を選んで展開します。</li>
+    <li>できた <code>{{ files.folder }}</code> フォルダを開きます。中に <code>DeskSlate.Probe.exe</code> と <code>DeskSlate.SensorHost.exe</code> があります。</li>
+    <li>フォルダの中の何も無い所を右クリックし、「ターミナルで開く」を選びます。このフォルダで PowerShell が開きます。</li>
+    <li>次のように打って Enter を押します。使い方の一覧が出れば、入れ方は終わりです。
+      <pre>.\DeskSlate.Probe.exe</pre></li>
+  </ol>
+  <div class="note">インストールはしません。レジストリやスタートメニューにも何も書きません。片付けはフォルダを消すだけです(8 章)。</div>
+
+  <h3>Android 側(端末だけで入れる)</h3>
+  <ol class="steps">
+    <li><code>{{ files.apk }}</code> を端末にコピーします(USB でつないでコピーする、端末のブラウザで Releases から直接ダウンロードする、など)。</li>
+    <li>端末のファイルのアプリで APK を開きます。</li>
+    <li>「提供元不明のアプリ」を許可するか聞かれたら、許可します。許可の場所は Android の版で違います(7.0 では「設定」→「セキュリティ」、8.0 以降は APK を開いたアプリごとの許可)。</li>
+    <li>「インストール」を押します。終わると、ホーム画面かアプリの一覧に「DeskSlate Probe」が出ます。</li>
+  </ol>
+
+  <h3>Android 側(PC から adb で入れる)</h3>
+  <p>端末で USB デバッグを有効にし、PC に adb がある場合だけの方法です。APK を置いたフォルダの PowerShell で次を打ちます。</p>
+  <pre>adb install -r {{ files.apk }}</pre>
+
+  <div class="warn"><strong>APK は仮の物です。</strong> デバッグ用の鍵で署名しています。後の版で正式な鍵に変えたら上書きでは入らないので、そのときはこの版を消してから入れ直してください。</div>
+</section>
+
+<div class="mf-page-break"></div>
+
+<section>
+  <h2>4. 使い方</h2>
+  <h3>PC 側: 共通</h3>
+  <ul>
+    <li>どのツールも、3 章で開いた PowerShell(展開したフォルダ)で、<code>.\</code> から打ちます。</li>
+    <li>コマンドの中の「¥」は、キーボードの「¥」のキー(半角)で打ちます。PowerShell の画面では「＼」の形(バックスラッシュ)に見えることがありますが、同じ文字です。</li>
+    <li><code>SensorHost</code> 以外は、管理者でない、ふつうの PowerShell で動かします。</li>
+    <li>ツールは終わると自分で止まります。途中でやめたいときは Ctrl + C を押します。</li>
+    <li>結果は PowerShell の画面に出るだけです。残したいときは、画面の文字を選んでコピーし、メモ帳などに貼ります(公開の場所には貼らないでください。7 章)。</li>
+  </ul>
+
+  <h3>audio(アプリごとの音量の一覧)</h3>
+  <ol class="steps">
+    <li>音楽や動画を 1 つ再生しておきます(音を出したことのあるアプリだけが一覧に出ます)。</li>
+    <li><code>.\DeskSlate.Probe.exe audio</code> を打ちます。すぐに一覧が出て終わります。</li>
+  </ol>
+
+  <h3>audio --set(音量を 2 秒だけ変える)</h3>
+  <ol class="steps">
+    <li>先に <code>audio</code> を動かし、一覧の <code>exe=</code> の後ろの名前(例: <code>example.exe</code>)を確かめます。</li>
+    <li><code>.\DeskSlate.Probe.exe audio --set example.exe 30</code> のように、名前と音量(0〜100)を付けて打ちます。</li>
+    <li>「続けますか [y/N]」と聞かれたら、<code>y</code> を打って Enter を押します。ほかのキーならやめます。</li>
+    <li>そのアプリの音量が 2 秒だけ 30% になり、元に戻ります。音を聞いて、変わって戻ったかを確かめます。</li>
+  </ol>
+
+  <h3>metrics(PC の状態の値)</h3>
+  <ol class="steps">
+    <li>タスク マネージャー(Ctrl + Shift + Esc)の「パフォーマンス」を開いておきます。</li>
+    <li><code>.\DeskSlate.Probe.exe metrics</code> を打ちます。1 秒ごとに 5 回、値が出て終わります。</li>
+    <li>出た値と、タスク マネージャーの値を見比べます。</li>
+  </ol>
+
+  <h3>foreground(前面のアプリの名前)</h3>
+  <ol class="steps">
+    <li><code>.\DeskSlate.Probe.exe foreground</code> を打ちます。</li>
+    <li>30 秒の間に、ほかのウィンドウを何度かクリックして前面を切り替えます。管理者で開いたアプリ(あれば)も 1 回前面にします。</li>
+    <li>30 秒たつと「foreground: 終わりました」と出て止まります。</li>
+  </ol>
+
+  <h3>keys(キーの打ち込み)</h3>
+  <div class="warn"><strong>本当にキーを打ちます。</strong> 打つ先は、5 秒後に前面にあるウィンドウです。メモ帳以外を前面にしないでください。</div>
+  <ol class="steps">
+    <li>メモ帳を開き、日本語入力をオフ(半角英数)にしておきます。オンのままだと、数字が変換待ちの文字になることがあります。</li>
+    <li>PowerShell に戻り、<code>.\DeskSlate.Probe.exe keys</code> を打ちます。</li>
+    <li>「続けますか [y/N]」と聞かれたら、<code>y</code> を打って Enter を押します。</li>
+    <li>「5 4 3 2 1」と数え始めるので、5 秒以内にメモ帳をクリックして前面にします。</li>
+    <li>メモ帳に <code>0123456789ABC-123</code> と入ったかを見ます。メモ帳は保存せずに閉じてかまいません。</li>
+  </ol>
+
+  <h3>pipe(名前付きパイプ)</h3>
+  <ol class="steps">
+    <li><code>.\DeskSlate.Probe.exe pipe</code> を打ちます。すぐに結果が出て終わります。何も操作はいりません。</li>
+  </ol>
+
+  <h3>SensorHost --probe(温度とファン)</h3>
+  <div class="note">このツールだけは管理者で動きます。読むだけで、ハードウェアの設定は変えません。</div>
+  <ol class="steps">
+    <li>スタートボタンを右クリックし、「ターミナル (管理者)」を選びます。UAC の確認が出たら「はい」を押します。</li>
+    <li>展開したフォルダに移ります。フォルダのアドレスバーの文字をコピーし、<code>cd "コピーした場所"</code> と打ちます。</li>
+    <li><code>.\DeskSlate.SensorHost.exe --probe</code> を打ちます。数秒で一覧が出て終わります。</li>
+    <li>終わったら、管理者の PowerShell は閉じます。</li>
+  </ol>
+  <p class="muted">管理者でない PowerShell から動かしても UAC の確認が出て動きますが、結果は別の窓に出て、終わるとすぐ閉じるので読めません。</p>
+</section>
+
+<div class="mf-page-break"></div>
+
+<section>
+  <h3>Android 側: 画面</h3>
+  <p>「DeskSlate Probe」を開くと、上に 4 つのボタン、下に結果が出ます。開いたときに「情報」が 1 回出ます。結果の文字は長押しで選んでコピーできます。</p>
+  <figure class="mf-figure phone">
+    <img src="images/android-probe.png" alt="Android 側の probe の画面">
+    <figcaption>図 1 「情報」を押したところ(dtab d-01J)</figcaption>
+  </figure>
+</section>
+
+
+<section>
+  <h3>情報・振動</h3>
+  <ol class="steps">
+    <li>「情報」を押すと、端末の情報とカメラの一覧が出ます。最後に <code>--- 終わり ---</code> が出ます。</li>
+    <li>「振動」を押すと、0.2 秒振動します。振動を感じたかを覚えておきます(画面の文字だけでは、本当に震えたかは分かりません)。</li>
+  </ol>
+
+  <h3>EAN-13 を 10 回(バーコードの読み取り)</h3>
+  <p>1 回ごとに「読む」を押してからバーコードをかざし、読めるまでの時間を測ります。10 回くり返します。</p>
+  <ol class="steps">
+    <li>明るい部屋で、EAN-13 のバーコードが付いた箱を手元に置きます。</li>
+    <li>「EAN-13 を 10 回」を押します。初めてのときはカメラを使ってよいか聞かれるので、「許可」を押します。</li>
+    <li>カメラの映像と「読む(1/10)」のボタンが出ます。この時点では、まだ時間は測っていません。</li>
+    <li>「読む(1/10)」を押します。押した瞬間から時間を測り始めます。</li>
+    <li>すぐに箱をカメラの前にかざし、バーコードが映像の中ではっきり映るようにします。横向きでも縦向きでも読めます。</li>
+    <li>読めると、端末が短く振動し、ボタンが「読む(2/10)」に変わります。10 秒たっても読めなければ、その回は「失敗」になり、次の回に進みます。</li>
+    <li>箱をいったんカメラの前から外します。外さずに次を押すと、すぐ読めて時間が短く出てしまいます。</li>
+    <li>「読む(2/10)」を押してから、また箱をかざします。これを 10 回目までくり返します。</li>
+    <li>10 回終わると、結果の行が出て、最後に <code>--- 終わり ---</code> が出ます。カメラの映像とボタンは消えます。</li>
+  </ol>
+  <div class="note">
+    <strong>目安:</strong> 10 回のうち 8 回以上が、3 秒以内に読めること。結果の最後の行に、満たすかどうかが出ます(5 章)。<br>
+    読んでいる途中でほかのアプリに移ったり、画面が消えたりすると、そこで止まります。最初からやり直してください。
+  </div>
+
+  <h3>QR を 3 回</h3>
+  <p>「QR を 3 回」を押し、EAN-13 と同じ手順で 3 回読みます(ボタンは「読む(1/3)」〜「読む(3/3)」)。</p>
+
+  <h3>adb から動かす場合</h3>
+  <p>PC から adb で動かすこともできます。<code>action</code> には <code>info</code>・<code>vibrate</code>・<code>ean</code>・<code>qr</code> のどれかを入れます。</p>
+  <pre>adb shell am start -n io.github.takosasidev.deskslate.probe/.MainActivity --es action ean
+adb logcat -s DeskSlateProbe</pre>
+  <div class="warn"><strong>adb の <code>ean</code> と <code>qr</code> は、1 回目が自動で始まります。</strong> カメラの準備ができた瞬間に 1 回目の計測が始まるので、先に箱をカメラの前に構えてから命令を打ってください。2 回目からは、画面のボタンと同じく「読む(n/10)」を押してからかざします。画面に出た行は、logcat のタグ <code>DeskSlateProbe</code> にも出ます。</div>
+</section>
+
+<div class="mf-page-break"></div>
+
+<section>
+  <h2>5. 結果の読み方</h2>
+  <p class="muted">この章の出力は、形を見せるための例です。アプリ名・機器名・数字は架空の物で、あなたの PC の結果とは違います。</p>
+
+  <h3>audio</h3>
+  <pre>API: NAudio.Wasapi 3.3.0.0
+既定の再生デバイス(Render / Multimedia): スピーカー (Example Audio)
+全体(AudioEndpointVolume): MasterVolumeLevelScalar=0.40 Mute=False
+セッション(AudioSessionManager.Sessions): 2 個
+  [0] pid=0 exe=不明 system=True state=AudioSessionStateInactive SimpleAudioVolume.Volume=1.00 Mute=False peak=0.00
+  [1] pid=1234 exe=example.exe system=False state=AudioSessionStateActive SimpleAudioVolume.Volume=1.00 Mute=False peak=0.12
+audio: 一覧を出しました</pre>
+  <ul>
+    <li><code>MasterVolumeLevelScalar</code> は PC 全体の音量(0.40 なら 40%)です。</li>
+    <li><code>[0]</code> などの行が、音を出しているアプリ 1 つずつです。<code>system=True</code> はシステムの音です。<code>Volume</code> はそのアプリの音量、<code>peak</code> はいま出ている音の大きさです。</li>
+    <li>行が「失敗: …」になっていたら、そのアプリの音は読めなかったという結果です。</li>
+  </ul>
+
+  <h3>audio --set</h3>
+  <pre>API: NAudio.Wasapi 3.3.0.0
+example.exe のセッション 1 個の音量を 30% に 2 秒だけ変えて、元に戻します。続けますか [y/N]: y
+変えた直後の読み直し: 0.30
+戻した後の読み直し: 1.00</pre>
+  <p>「変えた直後」が指定した音量、「戻した後」が元の音量(<code>audio</code> の <code>Volume</code>)と同じなら、変えて戻せています。</p>
+
+  <h3>metrics</h3>
+  <pre>ディスク [System.IO.DriveInfo]: C:\ 空き 120.0/500.0 GB
+バッテリー [GetSystemPowerStatus]: ACLineStatus=1 BatteryFlag=128 BatteryLifePercent=255 (Flag 128=電池なし, Percent 255=不明)
+--- 1 秒
+  cpu [GetSystemTimes]: 7.5 %
+  cpu [PerfCounter Processor Information\% Processor Utility\_Total]: 9.8 %
+  cpu [PerfCounter Processor\% Processor Time\_Total]: 7.2 %
+  mem [GlobalMemoryStatusEx]: 使用 9.6/32.0 GB (30 %)
+  net [NetworkInterface.GetIPStatistics]: 受信 1.2 kB/s 送信 0.8 kB/s (インターフェース 2 個の合計)
+  gpu [PerfCounter GPU Engine\Utilization Percentage, engtype_3D の合計]: 3.1 % (インスタンス 40 個、うち消えた物 0 個)
+--- 2 秒
+  (同じ形で 5 秒まで続く)</pre>
+  <ul>
+    <li><code>[ ]</code> の中は、値の取り方(API の名前)です。CPU は 3 通りの取り方で出します。タスク マネージャーの CPU の値にいちばん近い行がどれかを見ます。</li>
+    <li>バッテリーの <code>BatteryFlag=128</code> は電池なし(デスクトップ PC)、<code>BatteryLifePercent=255</code> は残りが分からない、という意味です。</li>
+    <li>行が「失敗: …」なら、その取り方はこの PC では使えなかったという結果です。</li>
+  </ul>
+
+  <div style="break-inside: avoid">
+  <h3>foreground</h3>
+  <pre>API: SetWinEventHook(EVENT_SYSTEM_FOREGROUND, WINEVENT_OUTOFCONTEXT) + QueryFullProcessImageNameW。今の前面: example-terminal.exe
+30 秒の間、ウィンドウを切り替えてください(管理者で開いたアプリも 1 回前面にしてください)。
+  2.4 秒  exe=example.exe  pid=1234
+  6.1 秒  exe=不明  pid=5678
+foreground: 終わりました</pre>
+  </div>
+  <p>前面を切り替えるたびに 1 行出ます。<code>exe=不明</code> は、そのアプリの名前が取れなかったという意味です。どのアプリで「不明」になったかが、このツールで知りたいことです。</p>
+
+  <h3>keys</h3>
+  <pre>打つ直前の前面: notepad.exe
+SendInput が受け取った入力の数: 仮想キー 20/20、Unicode 14/14</pre>
+  <ul>
+    <li>「打つ直前の前面」がメモ帳(<code>notepad.exe</code>)なら、打つ先は合っています。</li>
+    <li>数字が <code>20/20</code> と <code>14/14</code> なら、Windows はキーを全部受け取っています。</li>
+    <li>最後はメモ帳を見て確かめます。<code>0123456789ABC-123</code> と入っていれば成功です。管理者で開いたウィンドウには届かず、そのことは数字からは分かりません。</li>
+  </ul>
+
+  <h3>pipe</h3>
+  <pre>API: NamedPipeServerStreamAcl.Create(PipeDirection.Out, PipeSecurity) / NamedPipeClientStream(PipeDirection.In)
+作成: OK (名前 DeskSlate.Probe.&lt;SID&gt;、許可は自分の SID の Read だけ)
+接続: OK
+読めた 1 行: {"probe":"ok"}</pre>
+  <p>最後の行が <code>{"probe":"ok"}</code> なら成功です。途中で「失敗: …」が出たら、その文が結果です。利用者を表す番号(SID)そのものは出しません。</p>
+
+  <h3>SensorHost --probe</h3>
+  <p>最初の 2 行に、ライブラリの版と、PawnIO(一部のセンサーを読むためのドライバ)が入っているかどうか(<code>IsInstalled=True</code> か <code>False</code>)が出ます。その後に、ハードウェアごとのセンサーの一覧が次の形で続きます。</p>
+  <pre>[ハードウェアの種類] ハードウェアの名前  (識別子)
+  センサーの種類 #番号 センサーの名前 = 値  (識別子)
+
+(例)
+[Cpu] Example CPU  (…)
+  Temperature #0 CPU Package = 45.5  (…)
+  Load #0 CPU Total = 7.25  (…)
+[Motherboard] Example Board  (…)
+  [SuperIO] Example Super I/O  (…)
+    Fan #0 Fan #1 = 812  (…)</pre>
+  <ul>
+    <li><code>Temperature</code> は温度(℃)、<code>Fan</code> はファンの回転数、<code>Load</code> は負荷(%)です。</li>
+    <li>値が <code>—</code> の行は、そのセンサーの値が取れなかったという意味です。PawnIO が入っていないと、温度やファンの行が出ない・<code>—</code> になることがあります。</li>
+  </ul>
+</section>
+
+<div class="mf-page-break"></div>
+
+<section>
+  <h3>Android 側: 情報</h3>
+  <p>図 1 のように、Android の版(<code>Android: 7.0</code>)、API の番号、機種、カメラの数、カメラごとの向き・角度・ライトの有無・ハードウェアのレベル・出せる画像の大きさ、振動できるか(<code>hasVibrator=true</code>)、権限(<code>CAMERA=true</code> なら許可済み)が出ます。</p>
+
+  <h3>Android 側: 振動</h3>
+  <pre>=== 振動 ===
+振動: vibrate(200) を呼んだ(hasVibrator=true、例外なし)
+--- 終わり ---</pre>
+  <p>「例外なし」は、振動の命令が通ったという意味です。実際に震えたかは、手で感じて確かめます。</p>
+
+  <h3>Android 側: EAN-13 を 10 回</h3>
+  <pre>=== EAN-13 を 10 回 ===
+「読む」を押すと時間を測り始める。10 秒で読めなければ失敗
+カメラ: 背面カメラにつないだ
+解析の画像: 1280x960 rowStride=1280 pixelStride=1 rotationDegrees=90 buffer=1228800
+EAN-13 1/10: 計測を始めた
+EAN-13 1/10: 成功 1450 ms「4901234567894」
+振動: vibrate(200) を呼んだ(hasVibrator=true、例外なし)
+EAN-13 2/10: 計測を始めた
+EAN-13 2/10: 失敗(10 秒で読めない)
+(10/10 まで続く)
+EAN-13 の結果: 成功 9/10
+EAN-13 の結果: 3 秒以内の成功 8/10
+EAN-13 の結果: 時間の中央値 1620 ms
+R-3 の基準(3 秒以内に 8 回以上): 満たす
+--- 終わり ---</pre>
+  <table>
+    <tr><th>行</th><th>読み方</th></tr>
+    <tr><td>解析の画像</td><td>カメラから届いた画像の大きさです。この行が出れば、カメラは動いています</td></tr>
+    <tr><td>成功 1450 ms「…」</td><td>「読む」を押してから 1.45 秒で読めた。「 」の中は読んだ数字です</td></tr>
+    <tr><td>失敗(10 秒で読めない)</td><td>その回は 10 秒以内に読めなかった</td></tr>
+    <tr><td>成功 9/10</td><td>10 回のうち読めた回数(時間は問わない)</td></tr>
+    <tr><td>3 秒以内の成功 8/10</td><td>3 秒以内に読めた回数</td></tr>
+    <tr><td>時間の中央値</td><td>読めた回の時間を短い順に並べた真ん中の値。1 回も読めなければ「なし」</td></tr>
+    <tr><td>R-3 の基準 … 満たす</td><td>目安(3 秒以内の成功が 8 回以上)を満たしたかどうか。「満たさない」なら、明るさやかざし方を変えてもう一度測ってみてください</td></tr>
+  </table>
+
+  <div style="break-inside: avoid">
+  <h3>Android 側: QR を 3 回</h3>
+  <p>EAN-13 と同じ形で 3 回分が出ます。結果は「成功」「3 秒以内の成功」「時間の中央値」の 3 行で、目安(R-3)の行は出ません。読んだ文字が 80 文字を超えるときは、先頭の 80 文字だけを出し、後ろに全体の文字数を付けます。</p>
+  </div>
+</section>
+
+
+<section>
+  <h2>6. 困ったとき</h2>
+  <h3>PC 側</h3>
+  <table>
+    <tr><th>症状</th><th>原因</th><th>対処</th></tr>
+    <tr><td>「認識されません」と出る</td><td>展開したフォルダ以外で打った、または頭の <code>.\</code> が無い</td><td>3 章の手順でフォルダを開き直し、<code>.\DeskSlate.Probe.exe</code> の形で打つ</td></tr>
+    <tr><td>使い方の一覧だけが出る</td><td>ツールの名前のつづりが違う</td><td>4 章の表のとおり、小文字で打つ</td></tr>
+    <tr><td>「Windows によって PC が保護されました」と出る</td><td>ダウンロードした、署名の無い exe だから</td><td>出どころ({{ app.repo }} の Releases)を確かめてから、「詳細情報」→「実行」</td></tr>
+    <tr><td>audio --set で「のセッションがありません」</td><td>そのアプリがまだ音を出していない、または名前が違う</td><td>アプリで音を出してから、<code>audio</code> の一覧で <code>exe=</code> の名前を確かめる</td></tr>
+    <tr><td>「音量は 0〜100 の整数で指定してください」</td><td>音量の数字が範囲の外か、小数</td><td>0〜100 の整数で打ち直す</td></tr>
+    <tr><td>行が「失敗: …」になる</td><td>その取り方が、この PC では使えなかった</td><td>そのまま結果として残す(これ自体が知りたいことです)</td></tr>
+    <tr><td>keys でメモ帳に何も入らない</td><td>5 秒以内にメモ帳を前面にできなかった。または管理者で開いたウィンドウだった</td><td>ふつうに開いたメモ帳で、もう一度</td></tr>
+    <tr><td>keys で数字が変換待ちになる</td><td>日本語入力がオンだった</td><td>日本語入力をオフにして、もう一度</td></tr>
+    <tr><td>keys で「INPUT の大きさが … です」</td><td>x64 以外の Windows で動かした</td><td>x64 の Windows で動かす</td></tr>
+    <tr><td>SensorHost の窓がすぐ閉じる</td><td>管理者でない PowerShell から動かした</td><td>4 章の手順で、管理者の PowerShell から動かす</td></tr>
+    <tr><td>SensorHost で「使えるのは --probe だけです」</td><td><code>--probe</code> を付け忘れた</td><td><code>.\DeskSlate.SensorHost.exe --probe</code> と打つ</td></tr>
+    <tr><td>SensorHost で温度やファンが出ない・<code>—</code> になる</td><td>PawnIO が入っていない、またはその機器に対応していない</td><td>そのまま結果として残す。PawnIO は任意で、入れるなら自分で入れる物です(7 章)</td></tr>
+  </table>
+
+  <div style="break-inside: avoid">
+  <h3>Android 側</h3>
+  <table>
+    <tr><th>症状</th><th>原因</th><th>対処</th></tr>
+    <tr><td>APK を入れられない</td><td>提供元不明のアプリを許可していない。または別の鍵の版が入っている</td><td>許可してから入れ直す。だめなら今の版を消してから入れる</td></tr>
+    <tr><td>「カメラの権限がもらえなかった」</td><td>カメラの許可を断った</td><td>「設定」→「アプリ」→「DeskSlate Probe」→「権限」でカメラを許可する</td></tr>
+    <tr><td>「カメラ: 開けない: …」</td><td>ほかのアプリがカメラを使っている</td><td>カメラを使うアプリを閉じて、もう一度</td></tr>
+    <tr><td>「10 秒たっても解析の画像が来ない」</td><td>カメラから画像が届いていない</td><td>DeskSlate Probe を閉じて開き直す。だめなら端末を再起動</td></tr>
+    <tr><td>毎回「失敗」になる</td><td>暗い、ピントが合わない、近すぎる・遠すぎる、形式が違う(EAN-13 は数字 13 けた。8 けたの短いバーコードは読みません)</td><td>明るい所で、映像の中でバーコードがはっきり見える距離にする</td></tr>
+    <tr><td>押した直後に読めて、時間がとても短い</td><td>前の回の箱がカメラの前に残っていた</td><td>1 回ごとに箱を外し、「読む」を押してからかざす</td></tr>
+    <tr><td>「画面を離れたので読み取りを止めた」</td><td>通知を開いた、画面が消えた、ほかのアプリに移った</td><td>ボタンを押して最初からやり直す</td></tr>
+  </table>
+  </div>
+</section>
+
+
+<section>
+  <h2>7. 安全とプライバシー</h2>
+  <ul>
+    <li><strong>保存しない・外へ通信しない。</strong> PC 側のツールは結果を画面に出すだけで、ファイルに書かず、ネットワークにもつなぎません。Android 側のツールが持つ権限はカメラと振動だけで、インターネットの権限を持たず、何も保存しません。</li>
+    <li><strong>結果をそのまま公開の場所に貼らない。</strong> PC 側の結果には、動いているアプリの名前、再生デバイスの名前、ドライブの容量、ハードウェアの型番などが入ります。Android 側の結果には、端末の機種と、読んだバーコードの中身が入ります。</li>
+    <li><strong>SensorHost は管理者で動きます。</strong> 温度とファンの値を読むだけで、ハードウェアの設定は変えません。終わったら管理者の PowerShell は閉じてください。</li>
+    <li><strong>ドライバは入れません。</strong> 一部のセンサーを読むのに使う PawnIO は、使う人が自分で入れる物です。このツールは同梱も導入もしません(入っているかどうかを表示するだけです)。</li>
+    <li><strong>PC を操作するのは 2 つだけ。</strong> <code>keys</code>(キーを打つ)と <code>audio --set</code>(音量を 2 秒だけ変えて戻す)です。どちらも、動かす前に <code>y</code> の確認があります。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>8. 片付け</h2>
+  <h3>PC 側</h3>
+  <ol class="steps">
+    <li>開いている PowerShell を閉じます。</li>
+    <li><code>{{ files.folder }}</code> フォルダと、ダウンロードした zip を消します。これで全部です(インストールしていないので、ほかに消す物はありません)。</li>
+    <li>PawnIO を自分で入れていて、もう要らない場合は、PawnIO の配布元の手順で消します(このツールとは別の物です)。</li>
+  </ol>
+  <h3>Android 側</h3>
+  <ol class="steps">
+    <li>「設定」→「アプリ」→「DeskSlate Probe」→「アンインストール」で消します。adb があれば、PC から次でも消せます。
+      <pre>adb uninstall io.github.takosasidev.deskslate.probe</pre></li>
+    <li>コピーした APK のファイルが端末に残っていれば、ファイルのアプリで消します。</li>
+  </ol>
+</section>
+
+<section>
+  <h2>9. ライセンスと連絡先</h2>
+  <ul>
+    <li>{{ app.name }} は MIT ライセンスです。本文は zip の中の <code>LICENSE</code> と、リポジトリにあります。</li>
+    <li>使っているライブラリと、zip に同梱している .NET のランタイムのライセンスは、zip の中の <code>THIRD-PARTY-NOTICES.md</code> にあります。</li>
+    <li>不具合や質問は、リポジトリの Issues へどうぞ: <a href="{{ app.repo }}/issues">{{ app.repo }}/issues</a>(結果を貼るときは、7 章のとおり、PC の情報を消してから貼ってください)。</li>
+  </ul>
+  <p class="muted">この説明書は {{ app.name }} {{ app.version }}(プレリリース)、{{ app.date }} 時点の物です。</p>
+</section>
+
+</body>
+</html>

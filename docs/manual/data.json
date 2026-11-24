@@ -1,0 +1,21 @@
+{
+  "_meta": { "generated_by": "DeskSlate docs/manual(手で書いた値)" },
+  "app": {
+    "name": "DeskSlate",
+    "subtitle": "手元パネル 測定用ツール(Phase 0)",
+    "version": "0.0.1",
+    "date": "2026-11-24",
+    "repo": "https://github.com/takosasi-dev/desk-slate"
+  },
+  "files": {
+    "zip": "DeskSlate-Probe-v0.0.1-win-x64.zip",
+    "folder": "DeskSlate-Probe-v0.0.1-win-x64",
+    "apk": "DeskSlate-Probe-v0.0.1-android.apk"
+  },
+  "page": { "size": "A4", "expected_count": 15 },
+  "fonts": { "required": ["BIZ UDPGothic"] },
+  "images": { "dir": "../images" },
+  "expect": {
+    "texts": ["はじめに", "用意する物", "入れ方", "結果の読み方", "困ったとき", "安全とプライバシー", "片付け", "ライセンスと連絡先"]
+  }
+}
