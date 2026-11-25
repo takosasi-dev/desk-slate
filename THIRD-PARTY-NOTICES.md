@@ -9,6 +9,7 @@ DeskSlate 自身のコードは MIT です。ビルドのときに NuGet から�
 | NAudio.Wasapi | 3.3.0 | MIT | Probe |
 | NAudio.Core | 3.3.0 | MIT | NAudio.Wasapi の依存 |
 | System.Diagnostics.PerformanceCounter | 10.0.15 | MIT | Probe |
+| System.Security.Cryptography.ProtectedData | 10.0.0 | MIT | `DeskSlate.Link`。PC の識別の鍵を DPAPI で守る |
 | System.Configuration.ConfigurationManager | 10.0.15 | MIT | 上の依存 |
 | System.Diagnostics.EventLog | 10.0.15 | MIT | 上の依存 |
 | System.Security.Cryptography.ProtectedData | 10.0.15 | MIT | 上の依存 |

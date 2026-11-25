@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>DeskSlate.Link</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- INV-14・AC-40: 機能を持つ Platform は参照しない -->
+    <ProjectReference Include="..\DeskSlate.Core\DeskSlate.Core.csproj" />
+    <InternalsVisibleTo Include="DeskSlate.Link.Tests" />
+  </ItemGroup>
+</Project>

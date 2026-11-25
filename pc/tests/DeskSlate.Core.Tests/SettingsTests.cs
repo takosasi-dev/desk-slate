@@ -100,6 +100,8 @@ public sealed class SettingsTests : IDisposable
 
     private sealed class FixedClock(DateTime utcNow) : IClock
     {
-        public DateTime UtcNow { get; } = utcNow;
+        public long NowUs => 0;
+
+        public DateTimeOffset UtcNow { get; } = utcNow;
     }
 }

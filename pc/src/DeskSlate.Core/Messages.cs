@@ -1,5 +1,5 @@
 // 端末と PC の間のメッセージの番号・理由の文字・中身の型(仕様書 §9.3 のうち DeskSlate が足す分)。
-// 枠と、接続・ペアリングのメッセージ(0x01〜0x40)は Link が持つ。PhotoChunk と PadInput はバイナリなので、ここに型が無い。
+// 枠は FrameCodec.cs、接続・ペアリングのメッセージ(0x01〜0x40)の中身は LinkMessages.cs。PhotoChunk と PadInput はバイナリなので、ここに型が無い。
 // 仮決め: pressId と scanId は数(JSON の number)、detail は文字、at と since は ISO 8601 の文字。仕様書に型の指定が無い。
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,6 +8,19 @@ namespace DeskSlate.Core;
 
 public enum MessageType : byte
 {
+    // 接続・ペアリング(TabSpan の仕様書 §9.3 と同じ番号。中身の型は LinkMessages.cs)
+    Hello = 0x01,
+    HelloAck = 0x02,
+    PairRequest = 0x03,
+    PairChallenge = 0x04,
+    PairAccept = 0x05,
+    PairReject = 0x06,
+    Ping = 0x30,
+    Pong = 0x31,
+    Bye = 0x3F,
+    Notice = 0x40,
+
+    // DeskSlate が足す分
     Reject = 0x41,
     Features = 0x50,
     PanelLayout = 0x51,
